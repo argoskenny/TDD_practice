@@ -6,4 +6,5 @@ That's all we need.
 
 ## TDD Practice
 
-This is the practice of TDD. Reference by Agile principles, patterns, and practices in C#.
+This is some practices of TDD with PHP.
+Reference by Agile principles, patterns, and practices in C#.

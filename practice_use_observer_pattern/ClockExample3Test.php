@@ -19,6 +19,5 @@ class ClockExample3Test extends TestCase
         $this->assertEquals(4, $timeSink->getHour());
         $this->assertEquals(5, $timeSink->getMin());
         $this->assertEquals(6, $timeSink->getSec());
-
     }
 }

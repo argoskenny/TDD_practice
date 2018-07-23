@@ -47,11 +47,11 @@ class MockDB implements DataService
     }
 
     public function fetchPenaltyByMemberAndBoard($memberNo, $boardNo) {
-        $result = array();
         $penalityData = new PenaltyData();
-        $result[1] = new MemberData(1, "Amy" , "");
-        $result[2] = new MemberData(2, "Jack" , "");
-        $result[3] = new MemberData(3, "Tommy" , "");
-        return 
+        $penalityData->memberNo = 2;
+        $penalityData->boardNo = 1;
+        $penalityData->startTime = 109876542;
+        $penalityData->endTime = 109876533;
+        return $penalityData;
     }
 }

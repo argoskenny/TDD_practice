@@ -38,6 +38,6 @@ class DataServiceTests extends TestCase
         $dataService = new MockDB();
         $penalty = $dataService->fetchPenaltyByMemberAndBoard(3, 1);
         $this->assertEquals(109876542, $penalty['startTime']);
-        $this->assertEquals(109876542, $penalty['endTime']);
+        $this->assertEquals(109876533, $penalty['endTime']);
     }
 }

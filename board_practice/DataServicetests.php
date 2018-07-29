@@ -25,6 +25,20 @@ class DataServiceTests extends TestCase
         $this->assertEquals(5, $articleData->authorNo);
     }
 
+    public function testFetchMemberNewestArticle() {
+        $article1 = new ArticleData("hello1" , "test1 content", 1, 3);
+        $this->db->addArticle($article1);
+        $article2 = new ArticleData("hello2" , "test2 content", 1, 3);
+        $this->db->addArticle($article2);
+        $article3 = new ArticleData("hello3" , "test3 content", 1, 3);
+        $this->db->addArticle($article3);
+
+        $articleData = $this->db->fetchNewestArticleByMemberNo(3);
+        $this->assertEquals("hello3", $articleData->title);
+        $this->assertEquals("test3 content", $articleData->content);
+        $this->assertEquals(3, $articleData->authorNo);
+    }
+
     public function testFetchArticleList() {
         $articleListData = $this->db->fetchArticleListByBoard(1);
         $this->assertEquals(5, count($articleListData));
@@ -39,8 +53,8 @@ class DataServiceTests extends TestCase
 
     public function testFetchPenalty() {
         $penalty = $this->db->fetchPenaltyByMemberAndBoard(3, 1);
-        $this->assertEquals(109876542, $penalty->startTime);
-        $this->assertEquals(109876533, $penalty->endTime);
+        $this->assertEquals(1532850886, $penalty->startTime);
+        $this->assertEquals(1532850900, $penalty->endTime);
     }
 
     

@@ -11,6 +11,8 @@ interface DataService {
 
 class MockDB implements DataService
 {
+    static $articles = array();
+
     public function fetchBoard($boardNo) {
         $result = array(1 => new BoardData(1, "sport" ,[0,1,2]),
                         2 => new BoardData(2, "news" ,[2,5,8]),
@@ -20,11 +22,19 @@ class MockDB implements DataService
     }
 
     public function fetchArticleByNo($articleNo) {
-        $result = array(1 => new ArticleData(1, "ABC" , "test content", 0, 0),
-                        2 => new ArticleData(2, "ABC" , "test content", 0, 1),
-                        3 => new ArticleData(3, "hello" , "this is content", 0, 5)
+        $result = array(1 => new ArticleData("ABC" , "test content", 0, 0),
+                        2 => new ArticleData("ABC" , "test content", 0, 1),
+                        3 => new ArticleData("hello" , "this is content", 0, 5)
                     );
         return $result[$articleNo];
+    }
+
+    public function fetchNewestArticleByMemberNo($memberNo) {
+        return self::$articles[$memberNo][count(self::$articles[$memberNo]) - 1];
+    }
+
+    public function addArticle($article) {
+        self::$articles[$article->authorNo][] = $article;
     }
 
     public function fetchArticleListByBoard($boardNo) {
@@ -50,8 +60,8 @@ class MockDB implements DataService
         $penalityData = new PenaltyData();
         $penalityData->memberNo = 3;
         $penalityData->boardNo = 1;
-        $penalityData->startTime = 109876542;
-        $penalityData->endTime = 109876533;
+        $penalityData->startTime = 1532850886;
+        $penalityData->endTime = 1532850900;
         return $penalityData;
     }
 }

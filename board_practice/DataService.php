@@ -20,9 +20,9 @@ class MockDB implements DataService
     }
 
     public function fetchArticleByNo($articleNo) {
-        $result = array(1 => new ArticleData("ABC" , "test content", 0, 0),
-                        2 => new ArticleData("ABC" , "test content", 0, 1),
-                        3 => new ArticleData("hello" , "this is content", 0, 5)
+        $result = array(1 => new ArticleData(1, "ABC" , "test content", 0, 0),
+                        2 => new ArticleData(2, "ABC" , "test content", 0, 1),
+                        3 => new ArticleData(3, "hello" , "this is content", 0, 5)
                     );
         return $result[$articleNo];
     }

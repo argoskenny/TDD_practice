@@ -21,7 +21,7 @@ class PostArticleTransaction implements BoardTransaction
             return true;
         }
         if (time() > $penalty->startTime && time() > $penalty->startTime) {
-            # code...
+            
         }
     }
 

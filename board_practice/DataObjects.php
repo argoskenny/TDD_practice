@@ -14,6 +14,7 @@ class BoardData
 
 class ArticleData
 {
+    public $no;
     public $title;
     public $content;
     public $boardNo;

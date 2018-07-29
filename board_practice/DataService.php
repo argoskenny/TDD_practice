@@ -5,6 +5,8 @@ interface DataService {
     public function fetchBoard($boardNo);
     public function fetchArticleByNo($articleNo);
     public function fetchArticleListByBoard($boardNo);
+    public function addArticle($article);
+    public function updateArticle($article);
     public function fetchMember($memberNo);
     public function fetchPenaltyByMemberAndBoard($memberNo, $boardNo);
 }
@@ -22,19 +24,27 @@ class MockDB implements DataService
     }
 
     public function fetchArticleByNo($articleNo) {
-        $result = array(1 => new ArticleData("ABC" , "test content", 0, 0),
-                        2 => new ArticleData("ABC" , "test content", 0, 1),
-                        3 => new ArticleData("hello" , "this is content", 0, 5)
-                    );
-        return $result[$articleNo];
+        return self::$articles[$articleNo];
     }
 
     public function fetchNewestArticleByMemberNo($memberNo) {
-        return self::$articles[$memberNo][count(self::$articles[$memberNo]) - 1];
+        $result = array();
+        foreach (self::$articles as $key => $value) {
+            if ($value->authorNo == $memberNo) {
+                $result[] = $value;
+            }
+        }
+        return $result[count($result) - 1];
     }
 
     public function addArticle($article) {
-        self::$articles[$article->authorNo][] = $article;
+        $newArticle = new ArticleData($article->title, $article->content, $article->boardNo, $article->authorNo);
+        $newArticle->no = count(self::$articles) + 1;
+        self::$articles[$newArticle->no] = $newArticle;
+    }
+
+    public function updateArticle($article) {
+        self::$articles[$article->no] = $article;
     }
 
     public function fetchArticleListByBoard($boardNo) {

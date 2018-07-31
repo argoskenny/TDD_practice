@@ -1,14 +1,27 @@
 <?php
 require('DataService.php');
 
-interface BoardTransaction {
-    public function execute();
+abstract class BoardTransaction {
+    
+    protected $db;
+    abstract public function execute();
+
+    protected function checkPenaltyPass($authorNo, $boardNo) {
+        $penalty = $this->db->fetchPenaltyByMemberAndBoard($articleData->authorNo, $articleData->boardNo);
+        if ($penalty == NULL) {
+            return true;
+        }
+        if (time() < $penalty->startTime || time() > $penalty->endTime) {
+            return true;
+        }
+        return false;
+    }
 }
 
-class PostArticleTransaction implements BoardTransaction
+class PostArticleTransaction extends BoardTransaction
 {
     private $articleData;
-    private $db;
+    protected $db;
 
     public function __construct($articleData) {
         $this->articleData = $articleData;
@@ -16,27 +29,16 @@ class PostArticleTransaction implements BoardTransaction
     }
 
     public function execute() {
-        if ($this->checkPenaltyPass() == true) {
+        if ($this->checkPenaltyPass($articleData->authorNo, $articleData->boardNo) == true) {
             $this->db->addArticle($this->articleData);
         }
     }
-
-    private function checkPenaltyPass() {
-        $penalty = $this->db->fetchPenaltyByMemberAndBoard($articleData->authorNo, $articleData->boardNo);
-        if ($penalty == NULL) {
-            return true;
-        }
-        if (time() < $penalty->startTime || time() > $penalty->endTime) {
-            return true;
-        }
-        return false;;
-    }
 }
 
-class UpdateArticleTransaction implements BoardTransaction
+class UpdateArticleTransaction extends BoardTransaction
 {
     private $articleData;
-    private $db;
+    protected $db;
 
     public function __construct($articleData) {
         $this->articleData = $articleData;
@@ -44,19 +46,25 @@ class UpdateArticleTransaction implements BoardTransaction
     }
 
     public function execute() {
-        if ($this->checkPenaltyPass() == true) {
+        if ($this->checkPenaltyPass($articleData->authorNo, $articleData->boardNo) == true) {
             $this->db->updateArticle($this->articleData);
         }
     }
+}
 
-    private function checkPenaltyPass() {
-        $penalty = $this->db->fetchPenaltyByMemberAndBoard($articleData->authorNo, $articleData->boardNo);
-        if ($penalty == NULL) {
-            return true;
+class DeleteArticleTransaction extends BoardTransaction
+{
+    private $articleData;
+    protected $db;
+
+    public function __construct($articleData) {
+        $this->articleData = $articleData;
+        $this->db = new MockDB();
+    }
+
+    public function execute() {
+        if ($this->checkPenaltyPass($articleData->authorNo, $articleData->boardNo) == true) {
+            $this->db->deleteArticle($this->articleData);
         }
-        if (time() < $penalty->startTime || time() > $penalty->endTime) {
-            return true;
-        }
-        return false;;
     }
 }

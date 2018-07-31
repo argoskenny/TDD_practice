@@ -47,6 +47,10 @@ class MockDB implements DataService
         self::$articles[$article->no] = $article;
     }
 
+    public function deleteArticle($article) {
+        unset(self::$articles[$article->no]);
+    }
+
     public function fetchArticleListByBoard($boardNo) {
         $result = array();
         $result[1] = array(new ArticleData("hello" , "test1 content", 0, 5),

@@ -20,11 +20,33 @@ class TransactionTests extends TestCase
         $this->assertEquals("測試文章", $result->title);
     }
 
-    // public function testUpdateArticle() {
-    //     $postTransaction = new PostArticleTransaction($articleData);
-    //     $postTransaction->execute();
-    //     $this->assertEquals("sport", $boardData->boardName);
-    //     $this->assertEquals(3, count($boardData->admins));
-    // }
+    public function testUpdateArticle() {
+        $articleData = new ArticleData("測試文章", "這是測試文章", 1, 3);
+        $postTransaction = new PostArticleTransaction($articleData);
+        $postTransaction->execute();
+        $result = $this->db->fetchNewestArticleByMemberNo(3);
+        $this->assertEquals("測試文章", $result->title);
+
+        $updateArticleData = new ArticleData("測試文章 update", "這是測試文章 update", 1, 3);
+        $updateTransaction = new UpdateArticleTransaction($updateArticleData);
+        $updateTransaction->execute();
+        $result = $this->db->fetchNewestArticleByMemberNo(3);
+        $this->assertEquals("測試文章 update", $result->title);
+    }
+
+    public function testDeleteArticle() {
+        $articleData = new ArticleData("測試文章", "這是測試文章", 1, 3);
+        $postTransaction = new PostArticleTransaction($articleData);
+        $postTransaction->execute();
+        $result = $this->db->fetchNewestArticleByMemberNo(3);
+        $this->assertEquals("測試文章", $result->title);
+
+        $deleteArticleData = new ArticleData("測試文章", "這是測試文章", 1, 3);
+        $deleteArticleData->no = $result->no;
+        $deleteTransaction = new DeleteArticleTransaction($deleteArticleData);
+        $deleteTransaction->execute();
+        $result = $this->db->fetchArticleByNo($deleteArticleData->no);
+        $this->assertEquals(NULL, $result);
+    }
     
 }

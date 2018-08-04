@@ -68,3 +68,18 @@ class DeleteArticleTransaction extends BoardTransaction
         }
     }
 }
+
+class AddPenaltyTransaction extends BoardTransaction
+{
+    private $penaltyData;
+    protected $db;
+
+    public function __construct($penaltyData) {
+        $this->penaltyData = $penaltyData;
+        $this->db = new MockDB();
+    }
+
+    public function execute() {
+        $this->db->addPenalty($this->penaltyData);
+    }
+}

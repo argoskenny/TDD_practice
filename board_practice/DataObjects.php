@@ -47,4 +47,11 @@ class PenaltyData
     public $boardNo;
     public $startTime;
     public $endTime;
+    
+    public function __construct($memberNo, $boardNo, $startTime, $endTime) {
+        $this->memberNo = $memberNo;
+        $this->boardNo = $boardNo;
+        $this->startTime = $startTime;
+        $this->endTime = $endTime;
+    }
 }

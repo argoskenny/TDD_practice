@@ -9,11 +9,13 @@ interface DataService {
     public function updateArticle($article);
     public function fetchMember($memberNo);
     public function fetchPenaltyByMemberAndBoard($memberNo, $boardNo);
+    public function addPenalty($penaltyData);
 }
 
 class MockDB implements DataService
 {
     static $articles = array();
+    static $penaltys = array();
 
     public function fetchBoard($boardNo) {
         $result = array(1 => new BoardData(1, "sport" ,[0,1,2]),
@@ -71,11 +73,16 @@ class MockDB implements DataService
     }
 
     public function fetchPenaltyByMemberAndBoard($memberNo, $boardNo) {
-        $penalityData = new PenaltyData();
-        $penalityData->memberNo = 3;
-        $penalityData->boardNo = 1;
-        $penalityData->startTime = 1532850886;
-        $penalityData->endTime = 1532850900;
+        $penalityData = NULL;
+        foreach (self::$penaltys as $key => $value) {
+            if ($value->memberNo == $memberNo && $value->boardNo == $boardNo) {
+                $penalityData = $value;
+            }
+        }
         return $penalityData;
+    }
+
+    public function addPenalty($penaltyData) {
+        self::$penaltys[] = $penaltyData;
     }
 }

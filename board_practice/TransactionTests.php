@@ -48,5 +48,15 @@ class TransactionTests extends TestCase
         $result = $this->db->fetchArticleByNo($deleteArticleData->no);
         $this->assertEquals(NULL, $result);
     }
+
+    public function testAddPenalty() {
+        $penalityData = new PenaltyData(3, 1, 1532850886, 1532850900);
+        $addPenalityTransaction = new AddPenaltyTransaction($penalityData);
+        $addPenalityTransaction->execute();
+
+        $penalty = $this->db->fetchPenaltyByMemberAndBoard(3, 1);
+        $this->assertEquals(1532850886, $penalty->startTime);
+        $this->assertEquals(1532850900, $penalty->endTime);
+    }
     
 }
